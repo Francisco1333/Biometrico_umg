@@ -1,0 +1,39 @@
+/* ===========================
+   🌄 FONDO GLOBAL DEL SITIO
+   =========================== */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://res.cloudinary.com/dspxagazw/image/upload/v1779946346/guatemala_zimpew.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* ===========================
+   🎓 LOGO SUPERIOR IZQUIERDA
+   =========================== */
+body::before {
+    content: "";
+    position: fixed;
+    top: 150px;
+    left: 15px;
+
+    width: 3000px;      /* ← AJUSTA EL TAMAÑO AQUI */
+    height: 3000px;     /* ← EL SVG SE ESCALA POR ALTURA */
+
+    background-image: url('https://res.cloudinary.com/dspxagazw/image/upload/v1779946580/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg_wn3vqh.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    opacity: 0.95;
+    z-index: 9999;
+    pointer-events: none;
+}

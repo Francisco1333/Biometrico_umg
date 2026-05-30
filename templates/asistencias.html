@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Asistencias – Salón</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold:       #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim:   #8a6f32;
+    --navy:       #0a1628;
+    --navy-mid:   #112240;
+    --cream:      #f5f0e8;
+    --cream-dark: #e8e0d0;
+    --white:      #ffffff;
+    --text-light: #b8c4d8;
+    --green:      #4ade80;
+    --yellow:     #f59e0b;
+    --red:        #f87171;
+    --surface:    rgba(0,0,0,0.18);
+    --border:     rgba(255,255,255,0.15);
+    --border-gold: rgba(201,168,76,0.25);
+  }
+
+  body {
+    font-family: 'Raleway', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--cream);
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url('https://res.cloudinary.com/dspxagazw/image/upload/v1779946346/guatemala_zimpew.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.55) 100%);
+  }
+
+  .logo {
+    position: fixed;
+    top: 18px; left: 20px;
+    width: 180px; height: auto;
+    z-index: 100;
+    opacity: 0.95;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    pointer-events: none;
+  }
+  @media (max-width: 600px) { .logo { width: 110px; } }
+
+  .page-wrapper {
+    position: relative; z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    padding: 100px 32px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .header {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border-gold);
+    animation: fadeDown 0.7s ease both;
+  }
+  .header-left { display: flex; flex-direction: column; gap: 6px; }
+  .badge {
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.35);
+    color: var(--white);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    width: fit-content;
+  }
+  .header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  }
+  .header h1 span { color: var(--white); opacity: 0.6; }
+  .badge-sede {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 14px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    background: rgba(255,255,255,0.08);
+  }
+
+  .grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 24px;
+    animation: fadeUp 0.7s ease both;
+    animation-delay: 0.12s;
+  }
+  @media (max-width: 780px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px 32px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.45;
+  }
+  .card::before { top: 8px; left: 8px;  border-width: 1px 0 0 1px; }
+  .card::after  { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--white);
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 18px; height: 1px;
+    background: var(--white);
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  /* ── Cámara ── */
+  .cam-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 3px;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+  }
+  .cam-wrap::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      linear-gradient(var(--gold),var(--gold)) top left/14px 1px no-repeat,
+      linear-gradient(var(--gold),var(--gold)) top left/1px 14px no-repeat,
+      linear-gradient(var(--gold),var(--gold)) top right/14px 1px no-repeat,
+      linear-gradient(var(--gold),var(--gold)) top right/1px 14px no-repeat,
+      linear-gradient(var(--gold),var(--gold)) bottom left/14px 1px no-repeat,
+      linear-gradient(var(--gold),var(--gold)) bottom left/1px 14px no-repeat,
+      linear-gradient(var(--gold),var(--gold)) bottom right/14px 1px no-repeat,
+      linear-gradient(var(--gold),var(--gold)) bottom right/1px 14px no-repeat;
+    z-index: 4; pointer-events: none; opacity: 0.7;
+  }
+
+  #video { display: none; position: absolute; width: 1px; height: 1px; }
+  #liveCanvas { width: 100%; height: 100%; display: none; position: absolute; inset: 0; }
+  #canvas { display: none; }
+
+  #cam-placeholder {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px; color: rgba(184,196,216,0.4);
+  }
+  #cam-placeholder span {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  /* ── Botones ── */
+  .btn-row { display: flex; gap: 10px; }
+  .btn {
+    flex: 1;
+    padding: 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .btn-start {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.4);
+    color: var(--white);
+  }
+  .btn-start:not(:disabled):hover {
+    background: rgba(255,255,255,0.22);
+    box-shadow: 0 0 16px rgba(255,255,255,0.1);
+    transform: translateY(-1px);
+  }
+  .btn-stop {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7);
+  }
+  .btn-stop:not(:disabled):hover {
+    background: rgba(248,113,113,0.1);
+    border-color: rgba(248,113,113,0.4);
+    color: var(--red);
+    transform: translateY(-1px);
+  }
+
+  /* ── Contadores ── */
+  .counter-row { display: flex; gap: 10px; }
+  .counter {
+    flex: 1;
+    padding: 12px 10px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    text-align: center;
+  }
+  .counter-num {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .counter-num.green  { color: var(--green);  text-shadow: 0 0 12px rgba(74,222,128,0.3); }
+  .counter-num.orange { color: var(--yellow); text-shadow: 0 0 12px rgba(245,158,11,0.3); }
+  .counter-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.75;
+    margin-top: 4px;
+  }
+
+  /* ── Estado box ── */
+  #estado-box {
+    min-height: 78px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    padding: 14px 16px;
+    text-align: center;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border-gold);
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+  #estado-box.ok     { border-color: rgba(74,222,128,0.4);  box-shadow: 0 0 20px rgba(74,222,128,0.08); }
+  #estado-box.warn   { border-color: rgba(245,158,11,0.4);  box-shadow: 0 0 20px rgba(245,158,11,0.08); }
+  #estado-box.danger { border-color: rgba(248,113,113,0.4); box-shadow: 0 0 20px rgba(248,113,113,0.08); }
+  #estado-icono  { font-size: 1.6rem; margin-bottom: 5px; }
+  #estado-nombre {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.3px;
+  }
+  #estado-detalle {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 4px;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  /* ── Log ── */
+  #log {
+    max-height: 260px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  #log::-webkit-scrollbar { width: 3px; }
+  #log::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 2px; }
+
+  .log-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 2px;
+    background: rgba(0,0,0,0.2);
+    border-left: 2px solid var(--border-gold);
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .log-item.ok     { border-color: rgba(74,222,128,0.5); }
+  .log-item.warn   { border-color: rgba(245,158,11,0.5); }
+  .log-item.danger { border-color: rgba(248,113,113,0.5); }
+  .log-item.neutral{ border-color: rgba(201,168,76,0.3); }
+  .log-icono { font-size: 0.9rem; flex-shrink: 0; margin-top: 2px; }
+  .log-body  { flex: 1; }
+  .log-nombre {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.3px;
+  }
+  .log-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.4;
+    margin-top: 1px;
+    letter-spacing: 0.5px;
+  }
+  .log-hora {
+    font-size: 9.5px;
+    color: rgba(255,255,255,0.4);
+    white-space: nowrap;
+    margin-top: 3px;
+    letter-spacing: 1px;
+  }
+  .empty-log {
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 20px 0;
+  }
+
+  .btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 24px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 3px;
+    color: var(--white);
+    font-family: 'Raleway', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.25s ease;
+    align-self: flex-start;
+  }
+  .btn-volver:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(16px);  } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 560px) {
+    .card { padding: 20px 16px; }
+    .page-wrapper { padding-top: 80px; }
+    .header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
+</style>
+</head>
+<body data-sede="{{ id_sede }}">
+
+<div class="bg"></div>
+
+<img class="logo"
+     src="https://res.cloudinary.com/dspxagazw/image/upload/v1779946580/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg_wn3vqh.webp"
+     alt="Logo UMG">
+
+<div class="page-wrapper">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="badge">Universidad Mariano Gálvez</div>
+      <h1>Asistencias <span>//</span> Salón</h1>
+    </div>
+    <span class="badge-sede" id="badge-sede">Sede {{ id_sede }}</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- Columna izquierda: cámara -->
+    <div class="card">
+      <div class="section-title">Cámara en vivo</div>
+
+      <div class="cam-wrap">
+        <video id="video" autoplay playsinline muted></video>
+        <canvas id="liveCanvas"></canvas>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <div id="cam-placeholder">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+          <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;">Presione Iniciar</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-start" id="btn-start" onclick="iniciarCamara()">▶ Iniciar escaneo</button>
+        <button class="btn btn-stop"  id="btn-stop"  onclick="detenerCamara()" disabled>■ Detener</button>
+      </div>
+    </div>
+
+    <!-- Columna derecha: estado + log -->
+    <div class="card">
+      <div class="section-title">Estado actual</div>
+
+      <div class="counter-row">
+        <div class="counter">
+          <div class="counter-num green" id="cnt-ok">0</div>
+          <div class="counter-label">Registrados hoy</div>
+        </div>
+        <div class="counter">
+          <div class="counter-num orange" id="cnt-warn">0</div>
+          <div class="counter-label">Sin clase / cooldown</div>
+        </div>
+      </div>
+
+      <div id="estado-box">
+        <div id="estado-icono">📷</div>
+        <div id="estado-nombre">Esperando cámara</div>
+        <div id="estado-detalle">Inicia el escaneo para comenzar</div>
+      </div>
+
+      <div class="section-title" style="margin-top:2px">Actividad reciente</div>
+      <div id="log"><p class="empty-log">Sin registros aún</p></div>
+    </div>
+
+  </div>
+
+  <a href="/index" class="btn-volver">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Volver al menú
+  </a>
+
+</div>
+
+<script>
+  const ID_SEDE = parseInt(document.body.dataset.sede) || 1;
+  document.getElementById('badge-sede').textContent = 'Sede ' + ID_SEDE;
+
+  let stream = null, intervalo = null, activo = false, cntOk = 0, cntWarn = 0;
+  let animFrame = null;
+
+  // Mismas proporciones que registro
+  const LC_W_A = 640, LC_H_A = 480;
+  const GUIA_BX_A = LC_W_A * 0.25;
+  const GUIA_BY_A = LC_H_A * 0.08;
+  const GUIA_BW_A = LC_W_A * 0.50;
+  const GUIA_BH_A = LC_H_A * 0.84;
+
+  function dibujarLive() {
+    const video = document.getElementById('video');
+    const lc    = document.getElementById('liveCanvas');
+    lc.width = LC_W_A; lc.height = LC_H_A;
+    const ctx = lc.getContext('2d');
+
+    // Espejo horizontal
+    ctx.save();
+    ctx.translate(LC_W_A, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, LC_W_A, LC_H_A);
+    ctx.restore();
+
+    // Oscurecer fuera del cuadro
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.fillRect(0, 0, LC_W_A, GUIA_BY_A);
+    ctx.fillRect(0, GUIA_BY_A + GUIA_BH_A, LC_W_A, LC_H_A - GUIA_BY_A - GUIA_BH_A);
+    ctx.fillRect(0, GUIA_BY_A, GUIA_BX_A, GUIA_BH_A);
+    ctx.fillRect(GUIA_BX_A + GUIA_BW_A, GUIA_BY_A, LC_W_A - GUIA_BX_A - GUIA_BW_A, GUIA_BH_A);
+
+    // Cuadro verde
+    ctx.strokeStyle = '#4ade80';
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(GUIA_BX_A, GUIA_BY_A, GUIA_BW_A, GUIA_BH_A);
+
+    // Texto guía
+    ctx.fillStyle = '#4ade80';
+    ctx.font = '12px Raleway, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Centre su rostro aquí', LC_W_A / 2, GUIA_BY_A - 7);
+
+    animFrame = requestAnimationFrame(dibujarLive);
+  }
+
+  async function iniciarCamara() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: 640, height: 480 } });
+      const video = document.getElementById('video');
+      video.srcObject = stream;
+      await new Promise(r => video.onloadedmetadata = r);
+      await video.play();
+
+      document.getElementById('cam-placeholder').style.display = 'none';
+      document.getElementById('liveCanvas').style.display = 'block';
+
+      activo = true;
+      document.getElementById('btn-start').disabled = true;
+      document.getElementById('btn-stop').disabled  = false;
+      setEstado('neutral', '📷', 'Escaneando…', 'Coloque su rostro en el cuadro verde');
+      dibujarLive();
+      intervalo = setInterval(enviarFrame, 1800);
+    } catch(e) {
+      setEstado('danger', '⚠️', 'Sin acceso', 'No se pudo abrir la cámara');
+    }
+  }
+
+  function detenerCamara() {
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    clearInterval(intervalo);
+    activo = false;
+    document.getElementById('liveCanvas').style.display = 'none';
+    document.getElementById('cam-placeholder').style.display = 'flex';
+    document.getElementById('btn-start').disabled = false;
+    document.getElementById('btn-stop').disabled  = true;
+    setEstado('neutral', '⏹', 'Detenido', 'Inicia el escaneo para continuar');
+  }
+
+  function enviarFrame() {
+    if (!activo) return;
+    const video  = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+
+    const vW = video.videoWidth  || LC_W_A;
+    const vH = video.videoHeight || LC_H_A;
+    const scaleX = vW / LC_W_A;
+    const scaleY = vH / LC_H_A;
+
+    // Coordenadas del cuadro-guía en el video real (con corrección de espejo)
+    const srcX = Math.round((LC_W_A - GUIA_BX_A - GUIA_BW_A) * scaleX);
+    const srcY = Math.round(GUIA_BY_A * scaleY);
+    const srcW = Math.round(GUIA_BW_A * scaleX);
+    const srcH = Math.round(GUIA_BH_A * scaleY);
+
+    canvas.width  = srcW;
+    canvas.height = srcH;
+    // Dibuja solo la región de la cara desde el video crudo (sin espejo extra)
+    canvas.getContext('2d').drawImage(video, srcX, srcY, srcW, srcH, 0, 0, srcW, srcH);
+
+    canvas.toBlob(blob => {
+      if (!blob) return;
+      const fd = new FormData();
+      fd.append('frame',   blob, 'frame.jpg');
+      fd.append('id_sede', ID_SEDE);
+
+      fetch('/asistencias/reconocer', { method: 'POST', body: fd })
+        .then(r => r.json())
+        .then(manejarRespuesta)
+        .catch(() => {});
+    }, 'image/jpeg', 0.92);
+  }
+
+  function manejarRespuesta(d) {
+    switch (d.estado) {
+      case 'ok':
+        cntOk++;
+        document.getElementById('cnt-ok').textContent = cntOk;
+        setEstado('ok', '✅', d.nombre, 'Asistencia registrada · ' + d.curso);
+        agregarLog('ok', '✅', d.nombre, 'Presente · ' + d.curso);
+        break;
+      case 'ya_registrado':
+        setEstado('ok', '🔁', d.nombre, 'Ya tenía asistencia hoy en ' + d.curso);
+        break;
+      case 'cooldown':
+        cntWarn++;
+        document.getElementById('cnt-warn').textContent = cntWarn;
+        setEstado('warn', '⏳', d.nombre, 'Espere ' + d.restante + ' min');
+        break;
+      case 'fuera_horario':
+        setEstado('warn', '🕐', d.nombre || 'Sistema', 'Fuera de horario de clases');
+        break;
+      case 'sin_curso_horario':
+        cntWarn++;
+        document.getElementById('cnt-warn').textContent = cntWarn;
+        setEstado('warn', '📚', d.nombre, 'No tiene curso en el horario ' + d.horario);
+        agregarLog('warn', '📚', d.nombre, 'Sin curso en horario ' + d.horario);
+        break;
+      case 'desconocido':
+        setEstado('danger', '🚫', 'No identificado', 'Rostro no encontrado en la base de datos');
+        break;
+      case 'sin_rostro':
+      case 'sin_frame':
+        break;
+      default:
+        setEstado('danger', '⚠️', 'Error', 'Estado: ' + d.estado);
+    }
+  }
+
+  function setEstado(tipo, icono, nombre, detalle) {
+    const box = document.getElementById('estado-box');
+    box.className = tipo;
+    document.getElementById('estado-icono').textContent   = icono;
+    document.getElementById('estado-nombre').textContent  = nombre;
+    document.getElementById('estado-detalle').textContent = detalle;
+  }
+
+  function agregarLog(tipo, icono, nombre, sub) {
+    const log = document.getElementById('log');
+    const vacio = log.querySelector('.empty-log');
+    if (vacio) vacio.remove();
+    const hora = new Date().toLocaleTimeString('es-GT', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const item = document.createElement('div');
+    item.className = 'log-item ' + tipo;
+    item.innerHTML =
+      '<span class="log-icono">' + icono + '</span>' +
+      '<div class="log-body">' +
+        '<div class="log-nombre">' + nombre + '</div>' +
+        '<div class="log-sub">'    + sub    + '</div>' +
+        '<div class="log-hora">'   + hora   + '</div>' +
+      '</div>';
+    log.prepend(item);
+    const items = log.querySelectorAll('.log-item');
+    if (items.length > 50) items[items.length - 1].remove();
+  }
+</script>
+</body>
+</html>

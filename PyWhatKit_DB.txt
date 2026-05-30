@@ -1,0 +1,36 @@
+Date: 8/5/2026
+Time: 2:6
+Phone Number: +50250735660
+Message: UMG - RegistroSu numero de carnet es:7691-26-00010
+--------------------
+Date: 8/5/2026
+Time: 19:43
+Phone Number: +50250735660
+Message: *UMG - Sistema de Identificación*Su número de ID es: 7691-26-00018Gracias por registrarse.
+--------------------
+Date: 10/5/2026
+Time: 21:30
+Phone Number: +50258763273
+Message: *UMG - Sistema de Identificación*Su número de ID es: 7691-26-00020Gracias por registrarse.
+--------------------
+Date: 15/5/2026
+Time: 0:43
+Phone Number: +50237374848
+Message: *UMG - Sistema de Identificación*Su número de ID es: 7691-26-00019Gracias por registrarse.
+--------------------
+Date: 19/5/2026
+Time: 19:24
+Phone Number: +50213215313
+Message: *UMG - Sistema de Identificación*Su número de carnet es: 7691-26-00022Gracias por registrarse.
+--------------------
+Date: 19/5/2026
+Time: 21:39
+Phone Number: +50250735660
+Message: *UMG - Sistema de Identificación*Su número de carnet es: 7691-26-00023Gracias por registrarse.
+--------------------
+Date: 21/5/2026
+Time: 0:38
+Phone Number: +50258763273
+Image: C:\Users\Francisco\Downloads\ProyectoBiometrico\ProyectoBiometrico\ProyectoBiometrico\carnet_7691-26-00030_carnet.jpg
+Caption: *UMG - Carnet Estudiantil*Número de carnet: 7691-26-00030Universidad Mariano Gálvez de Guatemala.
+--------------------

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Control de Ingresos UMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold:       #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim:   #8a6f32;
+    --navy:       #0a1628;
+    --navy-mid:   #112240;
+    --cream:      #f5f0e8;
+    --cream-dark: #e8e0d0;
+    --white:      #ffffff;
+    --text-light: #b8c4d8;
+    --green:      #4ade80;
+    --yellow:     #f59e0b;
+    --red:        #f87171;
+  }
+
+  body {
+    font-family: 'Raleway', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--cream);
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url('https://res.cloudinary.com/dspxagazw/image/upload/v1779946346/guatemala_zimpew.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.30) 50%, rgba(0,0,0,0.50) 100%);
+  }
+
+  .logo {
+    position: fixed;
+    top: 18px; left: 20px;
+    width: 180px; height: auto;
+    z-index: 100;
+    opacity: 0.95;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    pointer-events: none;
+  }
+  @media (max-width: 600px) { .logo { width: 110px; } }
+
+  .page-wrapper {
+    position: relative; z-index: 1;
+    width: 100%;
+    max-width: 620px;
+    padding: 100px 24px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeDown 0.7s ease both;
+  }
+  .badge {
+    display: inline-block;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  }
+  .header h1 span { color: var(--gold); }
+  .header p {
+    margin-top: 10px;
+    color: var(--text-light);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .card {
+    width: 100%;
+    background: rgba(0,0,0,0.18);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 36px 40px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+    animation: fadeUp 0.7s ease both;
+    animation-delay: 0.12s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.5;
+  }
+  .card::before { top: 10px; left: 10px;  border-width: 1px 0 0 1px; }
+  .card::after  { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    display: flex; align-items: center; gap: 10px;
+    width: 100%;
+  }
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 18px; height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .cam-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .camera-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: 1px solid rgba(201,168,76,0.35);
+    overflow: hidden;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(4px);
+    border-radius: 3px;
+  }
+  .camera-frame::before, .camera-frame::after {
+    content: ''; position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--gold); border-style: solid; z-index: 2;
+  }
+  .camera-frame::before { top: 8px; left: 8px;  border-width: 2px 0 0 2px; }
+  .camera-frame::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+  #video { display: none; position: absolute; width: 1px; height: 1px; }
+  #liveCanvas { width: 100%; height: 100%; display: none; }
+  #canvas { display: none; }
+
+  #cam-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px; color: rgba(184,196,216,0.4);
+  }
+  #cam-placeholder span {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  .estado-box {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 3px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
+    transition: all 0.35s ease;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .estado-box.ok {
+    background: rgba(26,122,74,0.2);
+    border: 1px solid rgba(74,222,128,0.35);
+    color: var(--green);
+    box-shadow: 0 0 20px rgba(74,222,128,0.1);
+  }
+  .estado-box.cooldown {
+    background: rgba(245,158,11,0.15);
+    border: 1px solid rgba(245,158,11,0.35);
+    color: var(--yellow);
+    box-shadow: 0 0 20px rgba(245,158,11,0.1);
+  }
+  .estado-box.desconocido {
+    background: rgba(192,57,43,0.18);
+    border: 1px solid rgba(248,113,113,0.35);
+    color: var(--red);
+    box-shadow: 0 0 20px rgba(248,113,113,0.1);
+  }
+  .estado-box.info {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--gold);
+  }
+
+  .pulse-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+    animation: pulse 1.5s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 3px;
+    color: var(--cream);
+    font-family: 'Raleway', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    backdrop-filter: blur(4px);
+    transition: all 0.25s ease;
+    align-self: flex-start;
+  }
+  .btn-volver:hover {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(201,168,76,0.5);
+    color: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(16px);  } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 560px) {
+    .card { padding: 24px 18px; }
+    .camera-frame { height: 260px; }
+    .page-wrapper { padding-top: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<img class="logo"
+     src="https://res.cloudinary.com/dspxagazw/image/upload/v1779946580/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg_wn3vqh.webp"
+     alt="Logo UMG">
+
+<div class="page-wrapper">
+
+  <div class="header">
+    <div class="badge">Universidad Mariano Gálvez</div>
+    <h1>Control de <span>Ingresos</span></h1>
+    <p>{{ ubicacion | capitalize }} — Reconocimiento facial en tiempo real</p>
+  </div>
+
+  <div class="card">
+
+    <div class="section-title">Cámara de acceso</div>
+
+    <div class="cam-wrapper">
+      <div class="camera-frame">
+        <video id="video" autoplay playsinline></video>
+        <canvas id="liveCanvas"></canvas>
+        <canvas id="canvas"></canvas>
+        <div id="cam-placeholder">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+          <span>Iniciando cámara</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="estado" class="estado-box info">
+      <div class="pulse-dot"></div>
+      Iniciando cámara...
+    </div>
+
+    <a href="/index" class="btn-volver">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Volver al menú
+    </a>
+
+  </div>
+</div>
+
+<script>
+const UBICACION = "{{ ubicacion }}";
+const ID_SEDE   = parseInt("{{ id_sede }}");
+let procesando  = false;
+let animFrame   = null;
+
+// Mismas proporciones que registro
+const LC_W = 640, LC_H = 480;
+const GUIA_BX = LC_W * 0.25;
+const GUIA_BY = LC_H * 0.08;
+const GUIA_BW = LC_W * 0.50;
+const GUIA_BH = LC_H * 0.84;
+
+function dibujarLive() {
+  const video = document.getElementById('video');
+  const lc    = document.getElementById('liveCanvas');
+  lc.width = LC_W; lc.height = LC_H;
+  const ctx = lc.getContext('2d');
+
+  // Espejo horizontal
+  ctx.save();
+  ctx.translate(LC_W, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, LC_W, LC_H);
+  ctx.restore();
+
+  // Oscurecer fuera del cuadro
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.fillRect(0, 0, LC_W, GUIA_BY);
+  ctx.fillRect(0, GUIA_BY + GUIA_BH, LC_W, LC_H - GUIA_BY - GUIA_BH);
+  ctx.fillRect(0, GUIA_BY, GUIA_BX, GUIA_BH);
+  ctx.fillRect(GUIA_BX + GUIA_BW, GUIA_BY, LC_W - GUIA_BX - GUIA_BW, GUIA_BH);
+
+  // Cuadro verde
+  ctx.strokeStyle = '#4ade80';
+  ctx.lineWidth = 2.5;
+  ctx.strokeRect(GUIA_BX, GUIA_BY, GUIA_BW, GUIA_BH);
+
+  // Texto guía
+  ctx.fillStyle = '#4ade80';
+  ctx.font = '12px Raleway, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Centre su rostro aquí', LC_W / 2, GUIA_BY - 7);
+
+  animFrame = requestAnimationFrame(dibujarLive);
+}
+
+async function iniciar() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 }, audio: false });
+    const video = document.getElementById('video');
+    video.srcObject = stream;
+    await new Promise(r => video.onloadedmetadata = r);
+    await video.play();
+
+    document.getElementById('cam-placeholder').style.display = 'none';
+    document.getElementById('liveCanvas').style.display = 'block';
+
+    setEstado('info', 'Cámara activa — coloque su rostro en el cuadro');
+    dibujarLive();
+    setInterval(capturarYEnviar, 1200);
+  } catch(e) {
+    setEstado('desconocido', 'No se pudo acceder a la cámara');
+  }
+}
+
+async function capturarYEnviar() {
+  if (procesando) return;
+  procesando = true;
+  try {
+    const video  = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+
+    const vW = video.videoWidth  || LC_W;
+    const vH = video.videoHeight || LC_H;
+    const scaleX = vW / LC_W;
+    const scaleY = vH / LC_H;
+
+    // Coordenadas del cuadro-guía en el video real (con corrección de espejo)
+    const srcX = Math.round((LC_W - GUIA_BX - GUIA_BW) * scaleX);
+    const srcY = Math.round(GUIA_BY * scaleY);
+    const srcW = Math.round(GUIA_BW * scaleX);
+    const srcH = Math.round(GUIA_BH * scaleY);
+
+    canvas.width  = srcW;
+    canvas.height = srcH;
+    // Dibuja solo la región de la cara desde el video crudo (sin espejo extra)
+    canvas.getContext('2d').drawImage(video, srcX, srcY, srcW, srcH, 0, 0, srcW, srcH);
+
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.92));
+    const fd   = new FormData();
+    fd.append('frame',     blob, 'frame.jpg');
+    fd.append('ubicacion', UBICACION);
+    fd.append('id_sede',   ID_SEDE);
+
+    const res  = await fetch('/api/reconocer', { method: 'POST', body: fd });
+    const data = await res.json();
+
+    if (data.estado === 'ok') {
+      setEstado('ok', '✓ Bienvenido, ' + data.nombre);
+    } else if (data.estado === 'cooldown') {
+      setEstado('cooldown', data.nombre + ' — Espere ' + data.restante + ' min');
+    } else if (data.estado === 'desconocido') {
+      setEstado('desconocido', 'Acceso denegado — Rostro no reconocido');
+    } else if (data.estado === 'sin_rostro') {
+      setEstado('info', 'Cámara activa — coloque su rostro en el cuadro');
+    }
+  } catch(e) {
+    console.error(e);
+  } finally {
+    procesando = false;
+  }
+}
+
+function setEstado(tipo, msg) {
+  const el = document.getElementById('estado');
+  el.className = 'estado-box ' + tipo;
+  el.innerHTML = `<div class="pulse-dot"></div>${msg}`;
+}
+
+iniciar();
+</script>
+</body>
+</html>

@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Registro UMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold:       #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim:   #8a6f32;
+    --navy:       #0a1628;
+    --navy-mid:   #112240;
+    --cream:      #f5f0e8;
+    --cream-dark: #e8e0d0;
+    --white:      #ffffff;
+    --text-light: #b8c4d8;
+  }
+
+  body {
+    font-family: 'Raleway', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--cream);
+    background: var(--navy);
+  }
+
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url('https://res.cloudinary.com/dspxagazw/image/upload/v1779946346/guatemala_zimpew.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0,0,0,0.45) 0%,
+      rgba(0,0,0,0.30) 50%,
+      rgba(0,0,0,0.50) 100%
+    );
+  }
+
+  .logo {
+    position: fixed;
+    top: 18px; left: 20px;
+    width: 180px; height: auto;
+    z-index: 100;
+    opacity: 0.95;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    pointer-events: none;
+  }
+  @media (max-width: 600px) { .logo { width: 110px; } }
+
+  .page-wrapper {
+    position: relative; z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 80px 24px 80px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeDown 0.7s ease both;
+  }
+  .badge {
+    display: inline-block;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.7rem, 5vw, 2.6rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  }
+  .header h1 span { color: var(--gold); }
+  .header p {
+    margin-top: 10px;
+    color: var(--text-light);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .card {
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 40px 44px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+    animation: fadeUp 0.7s ease both;
+    animation-delay: 0.12s;
+    position: relative;
+  }
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.5;
+  }
+  .card::before { top: 10px; left: 10px;  border-width: 1px 0 0 1px; }
+  .card::after  { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 18px; height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 26px;
+    margin-bottom: 28px;
+  }
+  .field-full { grid-column: 1 / -1; }
+
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-weight: 600;
+  }
+  .field input, .field select {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    color: var(--white);
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    backdrop-filter: blur(4px);
+  }
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c9a84c' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+    cursor: pointer;
+  }
+  .field select option { background: var(--navy-mid); color: var(--cream); }
+  .field input:focus, .field select:focus {
+    border-color: rgba(201,168,76,0.7);
+    background: rgba(255,255,255,0.13);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+  }
+  .field input::placeholder { color: rgba(184,196,216,0.4); }
+
+  .separator {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent);
+    margin: 28px 0;
+  }
+
+  .carreras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px; margin-top: 4px;
+  }
+  .carrera-check-item {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 3px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .carrera-check-item:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.08); }
+  .carrera-check-item input[type="checkbox"] { display: none; }
+  .carrera-check-item .check-box {
+    width: 15px; height: 15px;
+    border: 1px solid rgba(201,168,76,0.5);
+    border-radius: 2px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .carrera-check-item input:checked ~ .check-box { background: var(--gold); border-color: var(--gold); }
+  .carrera-check-item input:checked ~ .check-box::after { content: '✓'; font-size: 10px; color: var(--navy); font-weight: 700; }
+  .carrera-check-item span { font-size: 13px; color: var(--cream-dark); }
+  .carrera-check-item:has(input:checked) { border-color: rgba(201,168,76,0.5); background: rgba(201,168,76,0.1); }
+
+  .cursos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 7px; margin-top: 4px;
+  }
+  .curso-item {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    padding: 9px 13px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .curso-item:hover { border-color: rgba(201,168,76,0.35); background: rgba(201,168,76,0.06); }
+  .curso-item input[type="checkbox"] { display: none; }
+  .curso-item .check-dot {
+    width: 13px; height: 13px;
+    border: 1px solid rgba(201,168,76,0.5);
+    border-radius: 50%; flex-shrink: 0;
+    transition: background 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .curso-item input:checked ~ .check-dot { background: var(--gold); border-color: var(--gold); }
+  .curso-item input:checked ~ .check-dot::after { content: ''; width: 5px; height: 5px; background: var(--navy); border-radius: 50%; }
+  .curso-item span { font-size: 12px; color: var(--cream-dark); }
+  .curso-item:has(input:checked) { border-color: rgba(201,168,76,0.45); background: rgba(201,168,76,0.08); }
+
+  .camera-section { margin-bottom: 28px; }
+  .camera-container { position: relative; width: 400px; margin: 14px 0; }
+  .camera-frame {
+    position: relative; width: 400px; height: 300px;
+    border: 1px solid rgba(201,168,76,0.35);
+    overflow: hidden;
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(4px);
+    border-radius: 3px;
+  }
+  .camera-frame::before, .camera-frame::after {
+    content: ''; position: absolute;
+    width: 16px; height: 16px;
+    border-color: var(--gold); border-style: solid; z-index: 2;
+  }
+  .camera-frame::before { top: 7px; left: 7px;  border-width: 2px 0 0 2px; }
+  .camera-frame::after  { bottom: 7px; right: 7px; border-width: 0 2px 2px 0; }
+  #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); display: none; }
+  #preview { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .camera-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px; color: rgba(184,196,216,0.4);
+  }
+  .camera-placeholder span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+  .camera-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+  .foto-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; margin-top: 8px;
+    padding: 5px 12px; border-radius: 20px; transition: all 0.3s;
+  }
+  .foto-status.ok    { background: rgba(26,122,74,0.2);  color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+  .foto-status.error { background: rgba(192,57,43,0.2);  color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+  .foto-status.info  { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px 20px;
+    border-radius: 3px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s ease;
+    border: none;
+    position: relative; overflow: hidden;
+  }
+  .btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .btn-ghost {
+    background: rgba(255,255,255,0.1);
+    color: var(--cream);
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(4px);
+  }
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(201,168,76,0.5);
+    color: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    width: 100%;
+    padding: 15px 24px;
+    font-size: 12px;
+    margin-top: 8px;
+    letter-spacing: 2.5px;
+  }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(201,168,76,0.35);
+  }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 3px;
+    color: var(--white);
+    font-family: 'Raleway', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    backdrop-filter: blur(4px);
+    transition: all 0.25s ease;
+    margin-top: 16px;
+  }
+  .btn-volver:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+
+  #mensaje {
+    margin-top: 18px; padding: 14px 18px;
+    border-radius: 3px; font-size: 14px;
+    display: none; animation: fadeUp 0.4s ease both;
+  }
+  #mensaje.success { background: rgba(26,122,74,0.15); border: 1px solid rgba(74,222,128,0.3); color: #4ade80; display: block; }
+  #mensaje.error   { background: rgba(192,57,43,0.15); border: 1px solid rgba(248,113,113,0.3); color: #f87171; display: block; }
+  #mensaje.loading { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); color: var(--gold); display: flex; align-items: center; gap: 10px; }
+
+  .spinner {
+    width: 15px; height: 15px;
+    border: 2px solid rgba(201,168,76,0.3);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite; flex-shrink: 0;
+  }
+
+  .download-carnet {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 12px; padding: 10px 18px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 3px; color: var(--gold-light);
+    font-size: 11px; letter-spacing: 1.5px;
+    text-transform: uppercase; text-decoration: none;
+    transition: background 0.2s;
+  }
+  .download-carnet:hover { background: rgba(201,168,76,0.25); }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(16px);  } to { opacity: 1; transform: translateY(0); } }
+  @keyframes spin     { to { transform: rotate(360deg); } }
+
+  @media (max-width: 580px) {
+    .card { padding: 28px 20px; }
+    .fields-grid { grid-template-columns: 1fr; }
+    .field-full { grid-column: 1; }
+    .page-wrapper { padding-top: 90px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<img class="logo"
+     src="https://res.cloudinary.com/dspxagazw/image/upload/v1779946580/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg_wn3vqh.webp"
+     alt="Logo UMG">
+
+<div class="page-wrapper">
+
+  <div class="header">
+    <div class="badge">Universidad Mariano Gálvez</div>
+    <h1>Registro <span>Institucional</span></h1>
+    <p>Complete el formulario para registrarse en el sistema UMG</p>
+  </div>
+
+  <div class="card">
+
+    <div class="section-title">Datos Personales</div>
+    <div class="fields-grid">
+      <div class="field">
+        <label>Nombre</label>
+        <input type="text" id="nombre" placeholder="Ingrese su nombre"/>
+      </div>
+      <div class="field">
+        <label>Apellido</label>
+        <input type="text" id="apellido" placeholder="Ingrese su apellido"/>
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input type="text" id="telefono" placeholder="Ej. 55551234"/>
+      </div>
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input type="email" id="correo" placeholder="correo@ejemplo.com"/>
+      </div>
+      <div class="field">
+        <label>Sección</label>
+        <input type="text" id="seccion" value="A" readonly style="opacity:0.6; cursor:not-allowed;"/>
+      </div>
+      <div class="field">
+        <label>Tipo de registro</label>
+        <select id="tipo">
+          <option value="">— Seleccionar —</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div id="carrerasWrapper" style="display:none;">
+      <div class="section-title">Carreras Inscritas</div>
+      <div class="carreras-grid" id="carrerasLista"></div>
+      <div style="margin-top:8px; font-size:11px; color:var(--text-light); letter-spacing:1px;">Seleccione todas las carreras en las que está inscrito</div>
+      <div style="margin: 22px 0 0;"></div>
+    </div>
+
+    <div id="cursosWrapper" style="display:none;">
+      <div class="section-title" id="cursosLabel">Cursos</div>
+      <div class="cursos-grid" id="cursosLista"></div>
+      <div style="margin: 22px 0 0;"></div>
+    </div>
+
+    <div id="carreraFiltroWrapper" style="display:none;">
+      <div class="section-title">Carreras que Impartirá</div>
+      <div class="carreras-grid" id="carrerasListaCatedratico"></div>
+      <div style="margin-top:8px; font-size:11px; color:var(--text-light); letter-spacing:1px;">Seleccione todas las carreras en las que impartirá cursos</div>
+      <div style="margin: 22px 0 0;"></div>
+    </div>
+
+    <div id="cursosWrapperCatedratico" style="display:none;">
+      <div class="section-title">Cursos que Impartirá</div>
+      <div class="cursos-grid" id="cursosListaCatedratico"></div>
+      <div style="margin: 22px 0 0;"></div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="section-title">Fotografía</div>
+    <div class="camera-section">
+      <div class="camera-container">
+        <div class="camera-frame">
+          <div class="camera-placeholder" id="cameraPlaceholder">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+            <span>Sin captura</span>
+          </div>
+          <!--
+            NOTA: el video se usa solo como fuente de datos, está oculto.
+            El canvas liveCanvas es el que se muestra al usuario (con espejo + guía).
+          -->
+          <video id="video" autoplay playsinline style="display:none; position:absolute; width:1px; height:1px;"></video>
+          <canvas id="liveCanvas" width="400" height="300" style="display:none; width:100%; height:100%;"></canvas>
+          <img id="preview" alt="Foto capturada"/>
+        </div>
+      </div>
+      <div class="camera-btns">
+        <button class="btn btn-ghost" id="btnAbrir" onclick="abrirCamara()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          Abrir cámara
+        </button>
+        <button class="btn btn-ghost" id="btnCapturar" onclick="capturarFoto()" style="display:none;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+          Capturar
+        </button>
+        <button class="btn btn-ghost" id="btnRetomar" onclick="retomar()" style="display:none;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.3"/></svg>
+          Retomar
+        </button>
+      </div>
+      <div id="fotoStatus"></div>
+    </div>
+
+    <button class="btn btn-primary" id="btnRegistrar" onclick="registrar()">
+      Completar registro
+    </button>
+
+    <div id="mensaje"></div>
+
+  </div>
+
+  <a href="/index" class="btn-volver">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Volver al menú
+  </a>
+
+</div>
+
+<!--
+  Canvas oculto para captura final.
+  Sus dimensiones se asignan dinámicamente en capturarFoto() para evitar
+  distorsiones por diferencia de aspecto entre el video real y las dimensiones fijas.
+-->
+<canvas id="canvas" style="display:none;"></canvas>
+
+<script>
+let stream = null;
+let fotoBlob = null;
+let todasLasCarreras = [];
+let animFrame = null;
+
+// ── Dimensiones del canvas de vista en vivo (lógicas, no de pantalla) ──────
+const LC_W = 400;
+const LC_H = 300;
+
+// Proporciones del cuadro-guía de rostro dentro del canvas de vista en vivo.
+// Deben coincidir EXACTAMENTE con las usadas en dibujarLive().
+const GUIA_BX = LC_W * 0.25;
+const GUIA_BY = LC_H * 0.08;
+const GUIA_BW = LC_W * 0.50;
+const GUIA_BH = LC_H * 0.84;
+
+
+async function cargarSelectores() {
+  const [rTipos, rCarreras] = await Promise.all([fetch('/api/tipos'), fetch('/api/carreras')]);
+  const tipos = await rTipos.json();
+  todasLasCarreras = await rCarreras.json();
+
+  tipos.forEach(t => {
+    const o = document.createElement('option');
+    o.value = t.id_tipo; o.textContent = t.tipo;
+    document.getElementById('tipo').appendChild(o);
+  });
+}
+
+document.getElementById('tipo').addEventListener('change', function() {
+  const tipoTexto = this.selectedOptions[0]?.textContent.toLowerCase().trim() || '';
+
+  document.getElementById('carrerasWrapper').style.display = 'none';
+  document.getElementById('cursosWrapper').style.display = 'none';
+  document.getElementById('carreraFiltroWrapper').style.display = 'none';
+  document.getElementById('cursosWrapperCatedratico').style.display = 'none';
+  document.getElementById('carrerasLista').innerHTML = '';
+  document.getElementById('cursosLista').innerHTML = '';
+  document.getElementById('carrerasListaCatedratico').innerHTML = '';
+  document.getElementById('cursosListaCatedratico').innerHTML = '';
+
+  if (tipoTexto === 'estudiante') {
+    const lista = document.getElementById('carrerasLista');
+    todasLasCarreras.forEach(c => {
+      const item = document.createElement('label');
+      item.className = 'carrera-check-item';
+      item.innerHTML = `
+        <input type="checkbox" name="carrera_cb" value="${c.id_carrera}" data-nombre="${c.carrera}"/>
+        <div class="check-box"></div>
+        <span>${c.carrera}</span>`;
+      item.querySelector('input').addEventListener('change', cargarCursosEstudiante);
+      lista.appendChild(item);
+    });
+    document.getElementById('carrerasWrapper').style.display = 'block';
+
+  } else if (tipoTexto === 'catedratico') {
+    const lista = document.getElementById('carrerasListaCatedratico');
+    todasLasCarreras.forEach(c => {
+      const item = document.createElement('label');
+      item.className = 'carrera-check-item';
+      item.innerHTML = `
+        <input type="checkbox" name="carrera_cat_cb" value="${c.id_carrera}" data-nombre="${c.carrera}"/>
+        <div class="check-box"></div>
+        <span>${c.carrera}</span>`;
+      item.querySelector('input').addEventListener('change', cargarCursosCatedratico);
+      lista.appendChild(item);
+    });
+    document.getElementById('carreraFiltroWrapper').style.display = 'block';
+  }
+});
+
+async function cargarCursosEstudiante() {
+  const checkeds = Array.from(document.querySelectorAll('input[name="carrera_cb"]:checked'));
+  const lista = document.getElementById('cursosLista');
+  const wrapper = document.getElementById('cursosWrapper');
+
+  if (!checkeds.length) {
+    wrapper.style.display = 'none';
+    lista.innerHTML = '';
+    return;
+  }
+
+  lista.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:8px 0;">Cargando cursos...</div>';
+  wrapper.style.display = 'block';
+  document.getElementById('cursosLabel').textContent = 'Cursos a cursar';
+
+  const yaSeleccionados = new Set(
+    Array.from(document.querySelectorAll('input[name="curso"]:checked')).map(i => i.value)
+  );
+
+  const promesas = checkeds.map(cb => fetch('/api/cursos/' + cb.value).then(r => r.json()));
+  const resultados = await Promise.all(promesas);
+
+  const vistos = new Set();
+  const cursos = [];
+  resultados.flat().forEach(c => {
+    if (!vistos.has(c.id_curso)) { vistos.add(c.id_curso); cursos.push(c); }
+  });
+
+  lista.innerHTML = '';
+  if (!cursos.length) {
+    lista.innerHTML = '<span style="color:var(--text-light);font-size:13px;">No hay cursos disponibles.</span>';
+    return;
+  }
+
+  cursos.forEach(c => {
+    const item = document.createElement('label');
+    item.className = 'curso-item';
+    const checked = yaSeleccionados.has(String(c.id_curso)) ? 'checked' : '';
+    item.innerHTML = `
+      <input type="checkbox" name="curso" value="${c.id_curso}" ${checked}/>
+      <div class="check-dot"></div>
+      <span>${c.nombre}</span>`;
+    lista.appendChild(item);
+  });
+}
+
+async function cargarCursosCatedratico() {
+  const checkeds = Array.from(document.querySelectorAll('input[name="carrera_cat_cb"]:checked'));
+  const lista = document.getElementById('cursosListaCatedratico');
+  const wrapper = document.getElementById('cursosWrapperCatedratico');
+
+  if (!checkeds.length) {
+    wrapper.style.display = 'none';
+    lista.innerHTML = '';
+    return;
+  }
+
+  const yaSeleccionados = new Set(
+    Array.from(document.querySelectorAll('input[name="curso_cat"]:checked')).map(i => i.value)
+  );
+
+  lista.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:8px 0;">Cargando cursos...</div>';
+  wrapper.style.display = 'block';
+
+  const promesas = checkeds.map(cb => fetch('/api/cursos/' + cb.value).then(r => r.json()));
+  const resultados = await Promise.all(promesas);
+
+  const vistos = new Set();
+  const cursos = [];
+  resultados.flat().forEach(c => {
+    if (!vistos.has(c.id_curso)) { vistos.add(c.id_curso); cursos.push(c); }
+  });
+
+  lista.innerHTML = '';
+  if (!cursos.length) {
+    lista.innerHTML = '<span style="color:var(--text-light);font-size:13px;">No hay cursos disponibles.</span>';
+    return;
+  }
+
+  cursos.forEach(c => {
+    const item = document.createElement('label');
+    item.className = 'curso-item';
+    const checked = yaSeleccionados.has(String(c.id_curso)) ? 'checked' : '';
+    item.innerHTML = `
+      <input type="checkbox" name="curso_cat" value="${c.id_curso}" ${checked}/>
+      <div class="check-dot"></div>
+      <span>${c.nombre}</span>`;
+    lista.appendChild(item);
+  });
+}
+
+
+// ── Cámara ─────────────────────────────────────────────────────────────────
+
+function dibujarLive() {
+  const video = document.getElementById('video');
+  const lc    = document.getElementById('liveCanvas');
+  const ctx   = lc.getContext('2d');
+
+  // Espejo horizontal
+  ctx.save();
+  ctx.translate(LC_W, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, LC_W, LC_H);
+  ctx.restore();
+
+  // Oscurecer fuera del cuadro-guía
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.fillRect(0, 0, LC_W, GUIA_BY);
+  ctx.fillRect(0, GUIA_BY + GUIA_BH, LC_W, LC_H - GUIA_BY - GUIA_BH);
+  ctx.fillRect(0, GUIA_BY, GUIA_BX, GUIA_BH);
+  ctx.fillRect(GUIA_BX + GUIA_BW, GUIA_BY, LC_W - GUIA_BX - GUIA_BW, GUIA_BH);
+
+  // Borde del cuadro-guía
+  ctx.strokeStyle = '#4ade80';
+  ctx.lineWidth = 2.5;
+  ctx.strokeRect(GUIA_BX, GUIA_BY, GUIA_BW, GUIA_BH);
+
+  // Texto guía
+  ctx.fillStyle = '#4ade80';
+  ctx.font = '11px Raleway, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Centre su rostro aquí', LC_W / 2, GUIA_BY - 6);
+
+  animFrame = requestAnimationFrame(dibujarLive);
+}
+
+async function abrirCamara() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 }, audio: false });
+    const video = document.getElementById('video');
+    video.srcObject = stream;
+    await new Promise(r => { video.onloadedmetadata = r; });
+    await video.play();
+
+    const lc = document.getElementById('liveCanvas');
+    lc.style.display = 'block';
+    document.getElementById('cameraPlaceholder').style.display = 'none';
+    document.getElementById('preview').style.display = 'none';
+    document.getElementById('btnAbrir').style.display = 'none';
+    document.getElementById('btnCapturar').style.display = 'inline-flex';
+    document.getElementById('btnRetomar').style.display = 'none';
+    setFotoStatus('Coloque su rostro dentro del cuadro', 'info');
+    fotoBlob = null;
+    dibujarLive();
+  } catch(e) {
+    console.error(e);
+    setFotoStatus('No se pudo acceder a la cámara', 'error');
+  }
+}
+
+function capturarFoto() {
+  const video  = document.getElementById('video');
+  const lc     = document.getElementById('liveCanvas');
+  const canvas = document.getElementById('canvas');
+  const ctx    = canvas.getContext('2d');
+
+  /*
+   * BUG CORREGIDO:
+   * Antes el canvas oculto tenía width/height FIJOS (320×240 en HTML),
+   * distintos a LC_W×LC_H (400×300), lo que causaba:
+   *   - Imagen recortada de manera incorrecta
+   *   - Encodings completamente distintos para la misma persona
+   *
+   * Ahora:
+   * 1. Leemos las dimensiones REALES del video (videoWidth/videoHeight).
+   * 2. Calculamos el área del cuadro-guía en coordenadas del VIDEO REAL,
+   *    no del canvas de display.
+   * 3. El canvas de captura toma exactamente esa región.
+   */
+
+  // Dimensiones reales del stream de video
+  const vW = video.videoWidth  || LC_W;
+  const vH = video.videoHeight || LC_H;
+
+  // Escala entre el canvas de display (LC_W×LC_H) y el video real
+  const scaleX = vW / LC_W;
+  const scaleY = vH / LC_H;
+
+  // Coordenadas del cuadro-guía en el espacio del VIDEO REAL
+  // Ajustamos por el efecto espejo: la coordenada X se invierte.
+  const srcX = Math.round((LC_W - GUIA_BX - GUIA_BW) * scaleX);  // espejo en X
+  const srcY = Math.round(GUIA_BY * scaleY);
+  const srcW = Math.round(GUIA_BW * scaleX);
+  const srcH = Math.round(GUIA_BH * scaleY);
+
+  // El canvas de captura final tiene las mismas dimensiones que la región recortada
+  canvas.width  = srcW;
+  canvas.height = srcH;
+
+  // Dibujar directamente desde el video (sin aplicar espejo extra,
+  // porque ya compensamos la coordenada X arriba)
+  ctx.drawImage(video, srcX, srcY, srcW, srcH, 0, 0, srcW, srcH);
+
+  // Detener animación y ocultar canvas de vista en vivo
+  if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+  lc.style.display = 'none';
+
+  canvas.toBlob(async blob => {
+    fotoBlob = blob;
+
+    // Detener cámara
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+
+    // Mostrar preview
+    document.getElementById('video').srcObject = null;
+    const prev = document.getElementById('preview');
+    prev.src = URL.createObjectURL(blob);
+    prev.style.display = 'block';
+    document.getElementById('btnCapturar').style.display = 'none';
+    document.getElementById('btnRetomar').style.display = 'inline-flex';
+
+    // Verificar duplicado en el backend
+    setFotoStatus('Verificando rostro...', 'info');
+    const fd = new FormData();
+    fd.append('foto', blob, 'cara.jpg');
+    try {
+      const res  = await fetch('/api/verificar_rostro', { method: 'POST', body: fd });
+      const data = await res.json();
+
+      if (data.duplicado) {
+        setFotoStatus('Rostro ya registrado (ID: ' + data.persona_id + ')', 'error');
+        fotoBlob = null;
+        setTimeout(retomar, 1800);
+      } else if (data.sin_cara) {
+        // El backend no pudo detectar cara: avisamos pero dejamos continuar
+        setFotoStatus('⚠ Cara no detectada — verifique la iluminación o retome', 'error');
+        fotoBlob = null;
+        setTimeout(retomar, 2000);
+      } else {
+        setFotoStatus('✓ Foto aceptada', 'ok');
+      }
+    } catch(e) {
+      // Error de red: aceptamos la foto igualmente para no bloquear al usuario
+      setFotoStatus('✓ Foto capturada', 'ok');
+    }
+  }, 'image/jpeg', 0.92);
+}
+
+function retomar() {
+  const lc = document.getElementById('liveCanvas');
+  lc.style.display = 'none';
+  document.getElementById('preview').style.display = 'none';
+  document.getElementById('btnRetomar').style.display = 'none';
+  document.getElementById('btnAbrir').style.display = 'inline-flex';
+  document.getElementById('cameraPlaceholder').style.display = 'flex';
+  if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+  setFotoStatus('', '');
+  fotoBlob = null;
+}
+
+function setFotoStatus(msg, tipo) {
+  const el = document.getElementById('fotoStatus');
+  if (!msg) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div class="foto-status ${tipo}">${msg}</div>`;
+}
+
+
+// ── Registro ────────────────────────────────────────────────────────────────
+
+async function registrar() {
+  const nombre   = document.getElementById('nombre').value.trim();
+  const apellido = document.getElementById('apellido').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const correo   = document.getElementById('correo').value.trim();
+  const seccion  = document.getElementById('seccion').value.trim();
+  const selTipo  = document.getElementById('tipo');
+  const idTipo   = selTipo.value;
+  const tipoTexto = selTipo.selectedOptions[0]?.textContent.trim() || '';
+  const tipoLower = tipoTexto.toLowerCase();
+
+  if (!nombre || !apellido || !telefono || !correo || !seccion || !idTipo) {
+    mostrarMensaje('Complete todos los campos obligatorios.', 'error'); return;
+  }
+  if (!fotoBlob) {
+    mostrarMensaje('Debe capturar la fotografía.', 'error'); return;
+  }
+
+  const fd = new FormData();
+  fd.append('nombre', nombre);
+  fd.append('apellido', apellido);
+  fd.append('telefono', telefono);
+  fd.append('email', correo);
+  fd.append('seccion', seccion);
+  fd.append('id_tipo', idTipo);
+  fd.append('tipo_texto', tipoTexto);
+  fd.append('foto', fotoBlob, 'foto.jpg');
+
+  if (tipoLower === 'estudiante') {
+    const carrerasChecked = Array.from(document.querySelectorAll('input[name="carrera_cb"]:checked'));
+    if (!carrerasChecked.length) { mostrarMensaje('Seleccione al menos una carrera.', 'error'); return; }
+    const cursosChecked = Array.from(document.querySelectorAll('input[name="curso"]:checked'));
+    if (!cursosChecked.length) { mostrarMensaje('Seleccione al menos un curso.', 'error'); return; }
+    carrerasChecked.forEach(cb => {
+      fd.append('carreras[]', cb.value);
+      fd.append('carreras_nombres[]', cb.dataset.nombre);
+    });
+    cursosChecked.forEach(cb => fd.append('cursos[]', cb.value));
+
+  } else if (tipoLower === 'catedratico') {
+    const carrerasChecked = Array.from(document.querySelectorAll('input[name="carrera_cat_cb"]:checked'));
+    if (!carrerasChecked.length) { mostrarMensaje('Seleccione al menos una carrera.', 'error'); return; }
+    const cursosChecked = Array.from(document.querySelectorAll('input[name="curso_cat"]:checked'));
+    if (!cursosChecked.length) { mostrarMensaje('Seleccione al menos un curso a impartir.', 'error'); return; }
+    carrerasChecked.forEach(cb => {
+      fd.append('carreras[]', cb.value);
+      fd.append('carreras_nombres[]', cb.dataset.nombre);
+    });
+    cursosChecked.forEach(cb => fd.append('cursos[]', cb.value));
+  }
+
+  document.getElementById('btnRegistrar').disabled = true;
+  mostrarMensaje('Procesando registro...', 'loading');
+
+  try {
+    const res  = await fetch('/api/registrar', { method: 'POST', body: fd });
+    const data = await res.json();
+
+    if (data.ok) {
+      if (tipoLower === 'estudiante' && data.pdf_url) {
+        mostrarMensaje(
+          `✓ Registro exitoso — Carnet: <strong>${data.carnet_visual}</strong><br>
+          <a class="download-carnet" href="${data.pdf_url}" target="_blank" download>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar carnet
+          </a>`,
+          'success'
+        );
+      } else {
+        mostrarMensaje(`✓ Registro exitoso — ID: ${data.persona_id}`, 'success');
+      }
+    } else {
+      mostrarMensaje('Error: ' + (data.error || 'Error desconocido'), 'error');
+    }
+  } catch(e) {
+    mostrarMensaje('Error de conexión. Intente nuevamente.', 'error');
+  } finally {
+    document.getElementById('btnRegistrar').disabled = false;
+  }
+}
+
+function mostrarMensaje(html, tipo) {
+  const el = document.getElementById('mensaje');
+  el.className = tipo;
+  el.innerHTML = tipo === 'loading'
+    ? `<div class="spinner"></div>${html}`
+    : html;
+}
+
+cargarSelectores();
+</script>
+</body>
+</html>

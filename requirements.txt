@@ -1,0 +1,11 @@
+flask
+gunicorn
+opencv-contrib-python-headless
+numpy
+fpdf2
+qrcode
+cloudinary
+requests
+Pillow
+mysql-connector-python
+sendgrid

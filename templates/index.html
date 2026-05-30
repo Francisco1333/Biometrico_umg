@@ -1,0 +1,126 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema Biométrico UMG</title>
+
+  <style>
+  /* 🔵 Fondo general */
+  body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://res.cloudinary.com/dspxagazw/image/upload/v1779946346/guatemala_zimpew.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  /* 🟥 Panel — ahora TRANSPARENTE estilo glass */
+  .panel {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 40px;
+    width: 380px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  h1 { 
+    color: #ffffff;
+    text-shadow: 1px 1px 2px black;
+    font-size: 22px; 
+    margin-bottom: 30px; 
+  }
+
+  /* ✨ Botones con efecto suave */
+/* ✨ Botones transparentes elegantes */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(4px);
+
+  transition: 0.25s ease;
+}
+
+
+/* Hover elegante */
+.btn:hover {
+  transform: scale(1.04);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+  filter: brightness(1.15);
+}
+  /* Hover mejorado */
+  .btn:hover {
+    transform: scale(1.03);
+    filter: brightness(1.15);
+  }
+
+  /* 🔷 LOGO SUPERIOR IZQUIERDO */
+  .logo-superior {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+
+    width: 200px;
+    height: auto;
+
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0.95;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .logo-superior {
+      width: 120px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- 🔵 Logo (no afecta nada del contenido) -->
+  <img class="logo-superior" 
+       src="https://res.cloudinary.com/dspxagazw/image/upload/v1779946580/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg_wn3vqh.webp" 
+       alt="Logo UMG">
+
+  <div class="panel">
+    <h1>🎓 Sistema Biométrico UMG</h1>
+
+    <a href="/registro" class="btn verde">Registrar Persona</a>
+
+    <a href="/asistencias" class="btn azul">
+  Control de Ingresos<br>Todos los salones
+</a>
+
+    <a href="/ingresos/puerta" class="btn azul">
+      Control de Ingresos<br>Puerta principal
+    </a>
+
+    
+    <a href="/salir" class="btn rojo">Cerrar Sesión</a>
+  </div>
+
+</body>
+</html>
