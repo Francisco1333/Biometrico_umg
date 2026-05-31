@@ -183,7 +183,7 @@ def init_asistencia_routes(app):
                 INSERT INTO asistencias_curso
                     (estudiante_id, curso_id, fecha, estado, id_sede)
                 VALUES (%s, %s, %s, %s, %s)
-            """, (mejor_id, curso_id, datetime.date.today(), "Presente", id_sede))
+            """, (mejor_id, curso_id, datetime.date.today(), None, id_sede))
             conn.commit()
             _ultimo_asistencia[(mejor_id, curso_id)] = ahora
 
