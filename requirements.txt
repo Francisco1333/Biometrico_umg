@@ -8,4 +8,3 @@ cloudinary
 requests
 Pillow
 mysql-connector-python
-sendgrid
