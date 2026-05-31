@@ -13,7 +13,7 @@ SIMILITUD_UMBRAL = 0.93
 _HOG = cv2.HOGDescriptor((64, 64), (16, 16), (8, 8), (8, 8), 9)
 
 RANGOS_HORARIO = [
-    ("7-9",   datetime.time(7,  0), datetime.time(9,  0)),
+    ("7-9",   datetime.time(0,  0), datetime.time(24,  0)),
     ("9-11",  datetime.time(9,  1), datetime.time(11, 0)),
     ("11-13", datetime.time(11, 1), datetime.time(13, 0)),
     ("14-16", datetime.time(14, 0), datetime.time(16, 0)),
