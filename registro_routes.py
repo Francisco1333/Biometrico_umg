@@ -7,8 +7,6 @@ import datetime
 import numpy as np
 from fpdf import FPDF
 import base64
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
 import qrcode
 import cloudinary
 import cloudinary.uploader
@@ -22,7 +20,7 @@ cloudinary.config(
     api_secret="7M36RjNCZzoOZvm4w0PEUVHk0IM"
 )
 
-SENDGRID_API_KEY = "3Y7JL2QWL6QJ3VCRVGUUL2A9"
+BREVO_API_KEY = "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"
 EMAIL_REMITENTE  = "francis14322@gmail.com"
 CARNET_PLANTILLA_URL = "https://res.cloudinary.com/dspxagazw/image/upload/v1779922335/carnet_xfmjlg.png"
 
@@ -211,29 +209,34 @@ def crear_pdf(datos):
 def enviar_correo_pdf(destino, pdf_path, carnet_visual):
     try:
         with open(pdf_path, "rb") as f:
-            pdf_data = base64.b64encode(f.read()).decode()
+            pdf_b64 = base64.b64encode(f.read()).decode("utf-8")
 
-        message = Mail(
-            from_email=EMAIL_REMITENTE,
-            to_emails=destino,
-            subject="Su Carnet Estudiantil UMG",
-            plain_text_content=(
-                f"Estimado estudiante,\n\n"
-                f"Adjunto encontrará su carnet estudiantil.\n"
-                f"Número de carnet: {carnet_visual}\n\n"
-                f"Universidad Mariano Gálvez de Guatemala."
-            )
+        payload = {
+            "sender": {"name": "UMG Biométrico", "email": EMAIL_REMITENTE},
+            "to": [{"email": destino}],
+            "subject": "Su Carnet Estudiantil UMG",
+            "textContent": (
+                f"Estimado estudiante,\n\nAdjunto encontrará su carnet estudiantil.\n"
+                f"Número de carnet: {carnet_visual}\n\nUniversidad Mariano Gálvez de Guatemala."
+            ),
+            "attachment": [{
+                "content": pdf_b64,
+                "name": f"carnet_{carnet_visual}.pdf"
+            }]
+        }
+
+        resp = req_http.post(
+            "https://api.brevo.com/v3/smtp/email",
+            headers={"api-key": BREVO_API_KEY, "Content-Type": "application/json"},
+            json=payload,
+            timeout=15
         )
-        adjunto = Attachment(
-            FileContent(pdf_data),
-            FileName(f"carnet_{carnet_visual}.pdf"),
-            FileType("application/pdf"),
-            Disposition("attachment")
-        )
-        message.attachment = adjunto
-        SendGridAPIClient(SENDGRID_API_KEY).send(message)
+        if resp.status_code not in (200, 201):
+            print("Error Brevo:", resp.status_code, resp.text)
+        else:
+            print("Correo enviado con Brevo OK")
     except Exception as e:
-        print("Error correo SendGrid:", e)
+        print("Error correo:", e)
 
 
 # ── Rutas ────────────────────────────────────────────────────────────────────
