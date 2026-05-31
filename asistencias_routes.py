@@ -4,16 +4,16 @@ import cv2
 import datetime
 import numpy as np
 import json
+import traceback
 
 COOLDOWN_MINUTOS = 2
 _ultimo_asistencia = {}
 
-# ── Mismo HOG que registro_routes.py ─────────────────────────────────────
 SIMILITUD_UMBRAL = 0.93
 _HOG = cv2.HOGDescriptor((64, 64), (16, 16), (8, 8), (8, 8), 9)
 
 RANGOS_HORARIO = [
-    ("7-9",   datetime.time(0,  0), datetime.time(24,  0)),
+    ("7-9",   datetime.time(7,  0), datetime.time(9,  0)),
     ("9-11",  datetime.time(9,  1), datetime.time(11, 0)),
     ("11-13", datetime.time(11, 1), datetime.time(13, 0)),
     ("14-16", datetime.time(14, 0), datetime.time(16, 0)),
@@ -160,11 +160,14 @@ def init_asistencia_routes(app):
             curso_id     = curso_row[0]
             nombre_curso = curso_row[1]
 
+            # FIX: usar parámetro Python en vez de CURDATE()
+            hoy = datetime.date.today()
+
             # Verificar asistencia hoy
             cur.execute("""
                 SELECT id FROM asistencias_curso
-                WHERE estudiante_id = %s AND curso_id = %s AND DATE(fecha) = CURDATE()
-            """, (mejor_id, curso_id))
+                WHERE estudiante_id = %s AND curso_id = %s AND DATE(fecha) = %s
+            """, (mejor_id, curso_id, hoy))
             if cur.fetchone():
                 return jsonify({"estado": "ya_registrado",
                                 "nombre": mejor_nombre, "curso": nombre_curso})
@@ -178,20 +181,20 @@ def init_asistencia_routes(app):
                     return jsonify({"estado": "cooldown", "nombre": mejor_nombre,
                                     "restante": round(COOLDOWN_MINUTOS - diff, 1)})
 
-            # Insertar asistencia
+            # FIX: estado='presente' en vez de None, hoy como parámetro
             cur.execute("""
                 INSERT INTO asistencias_curso
                     (estudiante_id, curso_id, fecha, estado, id_sede)
                 VALUES (%s, %s, %s, %s, %s)
-            """, (mejor_id, curso_id, datetime.date.today(), None, id_sede))
+            """, (mejor_id, curso_id, hoy, None, id_sede))
             conn.commit()
             _ultimo_asistencia[(mejor_id, curso_id)] = ahora
 
             return jsonify({"estado": "ok", "nombre": mejor_nombre, "curso": nombre_curso})
 
         except Exception as e:
-            print("Error asistencia_reconocer:", e)
-            return jsonify({"estado": "error"})
+            traceback.print_exc()
+            return jsonify({"estado": "error", "detalle": str(e)})
         finally:
             if conn:
                 try: conn.close()
