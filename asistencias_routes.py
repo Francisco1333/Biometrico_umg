@@ -139,23 +139,17 @@ def init_asistencia_routes(app):
             if mejor_sim < SIMILITUD_UMBRAL or mejor_id is None:
                 return jsonify({"estado": "desconocido"})
 
-            # Verificar horario
-            horario_actual = obtener_horario_actual()
-            if horario_actual is None:
-                return jsonify({"estado": "fuera_horario", "nombre": mejor_nombre})
-
-            # Buscar curso en ese horario
+            # Buscar cualquier curso del estudiante sin restricción de horario
             cur.execute("""
                 SELECT c.id, c.nombre FROM cursos c
                 JOIN estudiante_curso ec ON ec.id_curso = c.id
-                WHERE ec.id_persona = %s AND c.horario = %s
+                WHERE ec.id_persona = %s
                 LIMIT 1
-            """, (mejor_id, horario_actual))
+            """, (mejor_id,))
             curso_row = cur.fetchone()
 
             if not curso_row:
-                return jsonify({"estado": "sin_curso_horario",
-                                "nombre": mejor_nombre, "horario": horario_actual})
+                return jsonify({"estado": "sin_curso", "nombre": mejor_nombre})
 
             curso_id     = curso_row[0]
             nombre_curso = curso_row[1]
